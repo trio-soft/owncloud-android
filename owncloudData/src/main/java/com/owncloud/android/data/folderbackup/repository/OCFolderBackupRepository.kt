@@ -34,6 +34,12 @@ class OCFolderBackupRepository(
     override fun getFolderBackupConfigurationByNameAsFlow(name: String): Flow<FolderBackUpConfiguration?> =
         localFolderBackupDataSource.getFolderBackupConfigurationByNameAsFlow(name)
 
+    override fun getAllFolderBackupConfigurations(): List<FolderBackUpConfiguration> =
+        localFolderBackupDataSource.getAllFolderBackupConfigurations()
+
+    override fun getAllFolderBackupConfigurationsAsFlow(): Flow<List<FolderBackUpConfiguration>> =
+        localFolderBackupDataSource.getAllFolderBackupConfigurationsAsFlow()
+
     override fun saveFolderBackupConfiguration(folderBackUpConfiguration: FolderBackUpConfiguration) {
         localFolderBackupDataSource.saveFolderBackupConfiguration(folderBackUpConfiguration)
     }
@@ -41,4 +47,6 @@ class OCFolderBackupRepository(
     override fun resetFolderBackupConfigurationByName(name: String) =
         localFolderBackupDataSource.resetFolderBackupConfigurationByName(name)
 
+    override fun deleteFolderBackupConfigurationById(id: Int) =
+        localFolderBackupDataSource.deleteFolderBackupConfigurationById(id)
 }

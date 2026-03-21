@@ -49,12 +49,22 @@ class OCLocalFolderBackupDataSource(
     override fun getFolderBackupConfigurationByNameAsFlow(name: String): Flow<FolderBackUpConfiguration?> =
         folderBackupDao.getFolderBackUpConfigurationByNameAsFlow(name = name).map { it?.toModel() }
 
+    override fun getAllFolderBackupConfigurations(): List<FolderBackUpConfiguration> =
+        folderBackupDao.getAllFolderBackupConfigurations().map { it.toModel() }
+
+    override fun getAllFolderBackupConfigurationsAsFlow(): Flow<List<FolderBackUpConfiguration>> =
+        folderBackupDao.getAllFolderBackupConfigurationsAsFlow().map { list -> list.map { it.toModel() } }
+
     override fun saveFolderBackupConfiguration(folderBackUpConfiguration: FolderBackUpConfiguration) {
         folderBackupDao.update(folderBackUpConfiguration.toEntity())
     }
 
     override fun resetFolderBackupConfigurationByName(name: String) {
         folderBackupDao.delete(name)
+    }
+
+    override fun deleteFolderBackupConfigurationById(id: Int) {
+        folderBackupDao.deleteById(id)
     }
 
     /**************************************************************************************************************
@@ -72,6 +82,9 @@ class OCLocalFolderBackupDataSource(
             name = name,
             lastSyncTimestamp = lastSyncTimestamp,
             spaceId = spaceId,
+            enabled = enabled,
+            useSubfolders = useSubfolders,
+            excludeHidden = excludeHidden,
         )
 
     companion object {
@@ -87,6 +100,9 @@ class OCLocalFolderBackupDataSource(
                 lastSyncTimestamp = lastSyncTimestamp,
                 name = name,
                 spaceId = spaceId,
+                enabled = enabled,
+                useSubfolders = useSubfolders,
+                excludeHidden = excludeHidden,
             )
     }
 }

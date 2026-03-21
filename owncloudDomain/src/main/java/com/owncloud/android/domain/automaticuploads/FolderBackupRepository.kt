@@ -27,7 +27,13 @@ interface FolderBackupRepository {
 
     fun getFolderBackupConfigurationByNameAsFlow(name: String): Flow<FolderBackUpConfiguration?>
 
+    fun getAllFolderBackupConfigurations(): List<FolderBackUpConfiguration>
+
+    fun getAllFolderBackupConfigurationsAsFlow(): Flow<List<FolderBackUpConfiguration>>
+
     fun saveFolderBackupConfiguration(folderBackUpConfiguration: FolderBackUpConfiguration)
 
     fun resetFolderBackupConfigurationByName(name: String)
+
+    fun deleteFolderBackupConfigurationById(id: Int)
 }

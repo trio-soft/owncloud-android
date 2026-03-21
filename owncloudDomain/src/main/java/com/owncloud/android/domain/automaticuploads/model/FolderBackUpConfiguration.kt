@@ -29,10 +29,14 @@ data class FolderBackUpConfiguration(
     val lastSyncTimestamp: Long,
     val name: String,
     val spaceId: String?,
+    val enabled: Boolean = true,
+    val useSubfolders: Boolean = false,
+    val excludeHidden: Boolean = true,
 ) {
 
     val isPictureUploads get() = name == pictureUploadsName
     val isVideoUploads get() = name == videoUploadsName
+    val isCustomFolderSync get() = !isPictureUploads && !isVideoUploads
 
     companion object {
         const val pictureUploadsName = "Picture uploads"
