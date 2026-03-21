@@ -56,6 +56,13 @@
 
     <Preference
         app:allowDividerAbove="true"
+        app:icon="@drawable/ic_settings"
+        app:key="custom_folder_sync_subsection"
+        app:summary="@string/prefs_subsection_custom_folder_sync_summary"
+        app:title="@string/prefs_subsection_custom_folder_sync" />
+
+    <Preference
+        app:allowDividerAbove="true"
         app:fragment="com.owncloud.android.presentation.settings.advanced.SettingsAdvancedFragment"
         app:icon="@drawable/ic_settings"
         app:key="advanced_subsection"
