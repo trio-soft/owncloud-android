@@ -87,12 +87,26 @@ class CustomFolderSyncViewModel(
 
     fun saveCurrentConfig() {
         val config = _editingConfig.value ?: return
+        val finalConfig = if (_uploadExisting.value) {
+            config.copy(lastSyncTimestamp = 0L)
+        } else {
+            config
+        }
         viewModelScope.launch(coroutinesDispatcherProvider.io) {
             saveCustomFolderBackupConfigurationUseCase(
-                SaveCustomFolderBackupConfigurationUseCase.Params(config)
+                SaveCustomFolderBackupConfigurationUseCase.Params(finalConfig)
             )
+            // Ensure periodic worker is scheduled
             workManagerProvider.enqueueAutomaticUploadsWorker()
+            // Also trigger an immediate one-time run
+            val oneTimeRequest = androidx.work.OneTimeWorkRequestBuilder<com.owncloud.android.workers.AutomaticUploadsWorker>()
+                .addTag("custom_folder_sync_immediate")
+                .build()
+            androidx.work.WorkManager.getInstance(workManagerProvider.context)
+                .enqueue(oneTimeRequest)
         }
+        // Reset upload existing flag after save
+        _uploadExisting.value = false
     }
 
     fun deleteConfig(config: FolderBackUpConfiguration) {
@@ -123,6 +137,13 @@ class CustomFolderSyncViewModel(
 
     private val _displaySourcePath = MutableStateFlow<String?>(null)
     val displaySourcePath: StateFlow<String?> = _displaySourcePath
+
+    private val _uploadExisting = MutableStateFlow(false)
+    val uploadExisting: StateFlow<Boolean> = _uploadExisting
+
+    fun toggleUploadExisting(upload: Boolean) {
+        _uploadExisting.value = upload
+    }
 
     fun handleSelectUploadPath(data: Intent?) {
         val folderToUpload = data?.getParcelableExtra<OCFile>(FolderPickerActivity.EXTRA_FOLDER)

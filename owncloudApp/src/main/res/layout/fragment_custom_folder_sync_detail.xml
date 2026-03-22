@@ -112,6 +112,13 @@
             android:text="@string/custom_folder_sync_exclude_hidden"
             android:paddingVertical="8dp" />
 
+        <CheckBox
+            android:id="@+id/check_upload_existing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_upload_existing"
+            android:paddingVertical="8dp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

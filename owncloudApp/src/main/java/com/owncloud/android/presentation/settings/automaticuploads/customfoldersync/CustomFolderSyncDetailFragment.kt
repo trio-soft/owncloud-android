@@ -74,6 +74,7 @@ class CustomFolderSyncDetailFragment : Fragment() {
         val checkChargingOnly = view.findViewById<CheckBox>(R.id.check_charging_only)
         val checkUseSubfolders = view.findViewById<CheckBox>(R.id.check_use_subfolders)
         val checkExcludeHidden = view.findViewById<CheckBox>(R.id.check_exclude_hidden)
+        val checkUploadExisting = view.findViewById<CheckBox>(R.id.check_upload_existing)
         val btnSave = view.findViewById<View>(R.id.btn_save)
         val btnDelete = view.findViewById<View>(R.id.btn_delete)
 
@@ -115,6 +116,7 @@ class CustomFolderSyncDetailFragment : Fragment() {
         checkChargingOnly.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleChargingOnly(isChecked) }
         checkUseSubfolders.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleUseSubfolders(isChecked) }
         checkExcludeHidden.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleExcludeHidden(isChecked) }
+        checkUploadExisting.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleUploadExisting(isChecked) }
 
         btnSave.setOnClickListener {
             viewModel.saveCurrentConfig()
