@@ -318,7 +318,7 @@ class AutomaticUploadsWorker(
         NotificationUtils.createBasicNotification(
             context = appContext,
             contentTitle = appContext.getString(R.string.custom_folder_sync_notification_title),
-            contentText = appContext.getString(R.string.custom_folder_sync_notification_text, folderName, numberOfFiles),
+            contentText = appContext.getString(R.string.custom_folder_sync_notification_text, numberOfFiles, folderName),
             notificationChannelId = UPLOAD_NOTIFICATION_CHANNEL_ID,
             notificationId = customFolderNotificationId + folderName.hashCode() % 1000,
             intent = NotificationUtils.composePendingIntentToUploadList(appContext),
