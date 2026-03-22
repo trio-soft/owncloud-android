@@ -122,10 +122,11 @@ class AutomaticUploadsWorker(
 
             for (config in customConfigs) {
                 try {
+                    Timber.i("Processing custom folder '${config.name}': source=${config.sourcePath}, upload=${config.uploadPath}, lastSync=${config.lastSyncTimestamp}")
                     checkSourcePathIsAValidUriOrThrowException(config.sourcePath)
                     syncCustomFolder(config)
                 } catch (e: IllegalArgumentException) {
-                    Timber.e(e, "Source path for custom folder '${config.name}' is not valid")
+                    Timber.e(e, "Source path for custom folder '${config.name}' is not valid: ${config.sourcePath}")
                     showCustomFolderErrorNotification(config.name)
                 } catch (e: Exception) {
                     Timber.e(e, "Error syncing custom folder '${config.name}'")
@@ -152,7 +153,17 @@ class AutomaticUploadsWorker(
     @Throws(IllegalArgumentException::class)
     private fun checkSourcePathIsAValidUriOrThrowException(sourcePath: String) {
         val sourceUri: Uri = sourcePath.toUri()
-        DocumentFile.fromTreeUri(applicationContext, sourceUri)
+        // Check if we have persistable permission for this URI
+        val persistedUris = applicationContext.contentResolver.persistedUriPermissions
+        val hasPermission = persistedUris.any { it.uri == sourceUri && it.isReadPermission }
+        Timber.d("Source URI: $sourceUri, hasPermission: $hasPermission, persistedUris: ${persistedUris.map { it.uri }}")
+        if (!hasPermission) {
+            throw IllegalArgumentException("No persistable read permission for URI: $sourceUri")
+        }
+        val docFile = DocumentFile.fromTreeUri(applicationContext, sourceUri)
+        if (docFile == null || !docFile.exists()) {
+            throw IllegalArgumentException("Cannot access document tree at: $sourceUri")
+        }
     }
 
     private fun cancelWorker() {
