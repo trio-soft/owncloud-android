@@ -22,6 +22,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
@@ -67,6 +68,7 @@ class CustomFolderSyncDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val editName = view.findViewById<EditText>(R.id.edit_name)
         val switchEnabled = view.findViewById<SwitchCompat>(R.id.switch_enabled)
         val textSourcePath = view.findViewById<TextView>(R.id.text_source_path)
         val textUploadPath = view.findViewById<TextView>(R.id.text_upload_path)
@@ -119,6 +121,10 @@ class CustomFolderSyncDetailFragment : Fragment() {
         checkUploadExisting.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleUploadExisting(isChecked) }
 
         btnSave.setOnClickListener {
+            val customName = editName.text.toString().trim()
+            if (customName.isNotEmpty()) {
+                viewModel.updateName(customName)
+            }
             viewModel.saveCurrentConfig()
             parentFragmentManager.popBackStack()
         }
@@ -141,6 +147,10 @@ class CustomFolderSyncDetailFragment : Fragment() {
                 launch {
                     viewModel.editingConfig.collect { config ->
                         config ?: return@collect
+                        // Only set name if user hasn't started typing
+                        if (editName.text.isNullOrEmpty() && config.name.isNotEmpty()) {
+                            editName.setText(config.name)
+                        }
                         switchEnabled.isChecked = config.enabled
                         // Show readable source path if available, else parse from URI, else placeholder
                         val srcDisplay = viewModel.displaySourcePath.value

@@ -145,6 +145,10 @@ class CustomFolderSyncViewModel(
         _uploadExisting.value = upload
     }
 
+    fun updateName(name: String) {
+        _editingConfig.value = _editingConfig.value?.copy(name = name)
+    }
+
     fun handleSelectUploadPath(data: Intent?) {
         val folderToUpload = data?.getParcelableExtra<OCFile>(FolderPickerActivity.EXTRA_FOLDER)
         folderToUpload?.remotePath?.let { remotePath ->

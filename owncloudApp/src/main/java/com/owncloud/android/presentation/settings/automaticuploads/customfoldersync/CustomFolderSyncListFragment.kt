@@ -109,7 +109,13 @@ class CustomFolderAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val config = getItem(position)
         holder.name.text = config.name
-        holder.sourcePath.text = config.sourcePath
+        // Parse content URI to human-readable path
+        holder.sourcePath.text = try {
+            val docId = android.provider.DocumentsContract.getTreeDocumentId(android.net.Uri.parse(config.sourcePath))
+            docId?.replace("primary:", "/storage/emulated/0/")?.replace(":", "/") ?: config.sourcePath
+        } catch (_: Exception) {
+            config.sourcePath
+        }
         holder.uploadPath.text = config.uploadPath
         holder.enabledSwitch.isChecked = config.enabled
         holder.enabledSwitch.setOnCheckedChangeListener { _, isChecked ->
