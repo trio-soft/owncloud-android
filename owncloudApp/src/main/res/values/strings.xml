@@ -955,5 +955,11 @@
     <string name="custom_folder_sync_name">Name</string>
     <string name="custom_folder_sync_name_hint">e.g. Camera Photos</string>
     <string name="custom_folder_sync_upload_existing">Also upload existing files</string>
+    <string name="custom_folder_sync_file_exists_policy">If file already exists on server</string>
+    <string-array name="custom_folder_sync_file_exists_options">
+        <item>Skip uploading</item>
+        <item>Overwrite remote version</item>
+        <item>Rename new version</item>
+    </string-array>
     <string name="custom_folder_sync_enabled">Enabled</string>
 </resources>

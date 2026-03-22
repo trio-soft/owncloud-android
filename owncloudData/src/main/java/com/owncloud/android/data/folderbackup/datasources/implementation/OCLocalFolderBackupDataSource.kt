@@ -27,6 +27,7 @@ import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfigurat
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration.Companion.pictureUploadsName
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration.Companion.videoUploadsName
 import com.owncloud.android.domain.automaticuploads.model.UploadBehavior
+import com.owncloud.android.domain.automaticuploads.model.FileExistsPolicy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -85,6 +86,7 @@ class OCLocalFolderBackupDataSource(
             enabled = enabled,
             useSubfolders = useSubfolders,
             excludeHidden = excludeHidden,
+            fileExistsPolicy = fileExistsPolicy.name,
         )
 
     companion object {
@@ -103,6 +105,7 @@ class OCLocalFolderBackupDataSource(
                 enabled = enabled,
                 useSubfolders = useSubfolders,
                 excludeHidden = excludeHidden,
+                fileExistsPolicy = FileExistsPolicy.fromString(fileExistsPolicy),
             )
     }
 }

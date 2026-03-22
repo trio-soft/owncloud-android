@@ -150,6 +150,25 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- File Exists Policy -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_file_exists_policy"
+            android:textSize="16sp"
+            android:paddingTop="12dp" />
+
+        <Spinner
+            android:id="@+id/spinner_file_exists_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_marginVertical="8dp"
             android:background="?android:dividerHorizontal" />
 

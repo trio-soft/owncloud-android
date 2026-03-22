@@ -16,6 +16,7 @@ import android.provider.DocumentsContract
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration
+import com.owncloud.android.domain.automaticuploads.model.FileExistsPolicy
 import com.owncloud.android.domain.automaticuploads.model.UploadBehavior
 import com.owncloud.android.domain.automaticuploads.usecases.DeleteCustomFolderBackupUseCase
 import com.owncloud.android.domain.automaticuploads.usecases.GetAllFolderBackupConfigurationsStreamUseCase
@@ -139,6 +140,10 @@ class CustomFolderSyncViewModel(
 
     fun updateName(name: String) {
         _editingConfig.value = _editingConfig.value?.copy(name = name)
+    }
+
+    fun updateFileExistsPolicy(policy: FileExistsPolicy) {
+        _editingConfig.value = _editingConfig.value?.copy(fileExistsPolicy = policy)
     }
 
     fun handleSelectUploadPath(data: Intent?) {

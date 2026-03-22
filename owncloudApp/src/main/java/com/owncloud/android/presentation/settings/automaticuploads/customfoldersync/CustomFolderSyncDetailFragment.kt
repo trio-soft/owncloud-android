@@ -21,8 +21,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
@@ -32,6 +34,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.appcompat.widget.SwitchCompat
 import com.owncloud.android.R
+import com.owncloud.android.domain.automaticuploads.model.FileExistsPolicy
 import com.owncloud.android.extensions.showAlertDialog
 import com.owncloud.android.ui.activity.FolderPickerActivity
 import kotlinx.coroutines.launch
@@ -77,6 +80,7 @@ class CustomFolderSyncDetailFragment : Fragment() {
         val checkUseSubfolders = view.findViewById<CheckBox>(R.id.check_use_subfolders)
         val checkExcludeHidden = view.findViewById<CheckBox>(R.id.check_exclude_hidden)
         val checkUploadExisting = view.findViewById<CheckBox>(R.id.check_upload_existing)
+        val spinnerFileExists = view.findViewById<Spinner>(R.id.spinner_file_exists_policy)
         val btnSave = view.findViewById<View>(R.id.btn_save)
         val btnDelete = view.findViewById<View>(R.id.btn_delete)
 
@@ -120,6 +124,17 @@ class CustomFolderSyncDetailFragment : Fragment() {
         checkExcludeHidden.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleExcludeHidden(isChecked) }
         checkUploadExisting.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleUploadExisting(isChecked) }
 
+        // File exists policy spinner
+        val policyOptions = resources.getStringArray(R.array.custom_folder_sync_file_exists_options)
+        val policyValues = arrayOf(FileExistsPolicy.SKIP, FileExistsPolicy.OVERWRITE, FileExistsPolicy.RENAME)
+        spinnerFileExists.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, policyOptions)
+        spinnerFileExists.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, v: View?, position: Int, id: Long) {
+                viewModel.updateFileExistsPolicy(policyValues[position])
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        }
+
         btnSave.setOnClickListener {
             val customName = editName.text.toString().trim()
             if (customName.isNotEmpty()) {
@@ -162,6 +177,15 @@ class CustomFolderSyncDetailFragment : Fragment() {
                         checkChargingOnly.isChecked = config.chargingOnly
                         checkUseSubfolders.isChecked = config.useSubfolders
                         checkExcludeHidden.isChecked = config.excludeHidden
+                        // Set spinner to match config policy
+                        val policyIndex = when (config.fileExistsPolicy) {
+                            FileExistsPolicy.SKIP -> 0
+                            FileExistsPolicy.OVERWRITE -> 1
+                            FileExistsPolicy.RENAME -> 2
+                        }
+                        if (spinnerFileExists.selectedItemPosition != policyIndex) {
+                            spinnerFileExists.setSelection(policyIndex)
+                        }
                     }
                 }
                 launch {

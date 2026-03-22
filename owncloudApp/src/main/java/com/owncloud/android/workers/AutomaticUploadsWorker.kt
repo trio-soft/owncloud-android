@@ -46,6 +46,7 @@ import com.owncloud.android.presentation.settings.SettingsActivity
 import com.owncloud.android.domain.transfers.model.UploadEnqueuedBy
 import com.owncloud.android.usecases.transfers.uploads.UploadFileFromContentUriUseCase
 import com.owncloud.android.utils.MimetypeIconUtil
+import com.owncloud.android.domain.automaticuploads.model.FileExistsPolicy
 import com.owncloud.android.utils.NotificationUtils
 import com.owncloud.android.utils.UPLOAD_NOTIFICATION_CHANNEL_ID
 import org.koin.core.component.KoinComponent
@@ -199,13 +200,26 @@ class AutomaticUploadsWorker(
                 config.uploadPath + File.separator + documentFile.name
             }
 
+            // Determine forceOverwrite based on fileExistsPolicy
+            val forceOverwrite = config.fileExistsPolicy == FileExistsPolicy.OVERWRITE
+
+            // For SKIP policy, check if this remote path was already uploaded
+            if (config.fileExistsPolicy == FileExistsPolicy.SKIP) {
+                val existingTransfer = transferRepository.getLastTransferFor(remotePath, config.accountName)
+                if (existingTransfer != null) {
+                    Timber.d("SKIP policy: file already uploaded at $remotePath, skipping")
+                    continue
+                }
+            }
+
             val uploadId = storeInUploadsDatabase(
                 documentFile = documentFile,
                 uploadPath = remotePath,
                 accountName = config.accountName,
                 behavior = config.behavior,
                 createdByWorker = UploadEnqueuedBy.ENQUEUED_AS_AUTOMATIC_UPLOAD_PICTURE,
-                spaceId = config.spaceId
+                spaceId = config.spaceId,
+                forceOverwrite = forceOverwrite,
             )
             enqueueSingleUpload(
                 contentUri = documentFile.uri,
@@ -453,6 +467,7 @@ class AutomaticUploadsWorker(
         behavior: UploadBehavior,
         createdByWorker: UploadEnqueuedBy,
         spaceId: String?,
+        forceOverwrite: Boolean = false,
     ): Long {
         val ocTransfer = OCTransfer(
             localPath = documentFile.uri.toString(),
@@ -461,7 +476,7 @@ class AutomaticUploadsWorker(
             fileSize = documentFile.length(),
             status = TransferStatus.TRANSFER_QUEUED,
             localBehaviour = behavior,
-            forceOverwrite = false,
+            forceOverwrite = forceOverwrite,
             createdBy = createdByWorker,
             spaceId = spaceId,
         )

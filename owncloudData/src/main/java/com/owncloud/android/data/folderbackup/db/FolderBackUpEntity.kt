@@ -36,6 +36,7 @@ data class FolderBackUpEntity(
     val enabled: Boolean = true,
     val useSubfolders: Boolean = false,
     val excludeHidden: Boolean = true,
+    val fileExistsPolicy: String = "SKIP",
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
