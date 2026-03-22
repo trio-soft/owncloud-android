@@ -29,7 +29,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.switchmaterial.SwitchMaterial
+import androidx.appcompat.widget.SwitchCompat
 import com.owncloud.android.R
 import com.owncloud.android.extensions.showAlertDialog
 import com.owncloud.android.ui.activity.FolderPickerActivity
@@ -67,7 +67,7 @@ class CustomFolderSyncDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val switchEnabled = view.findViewById<SwitchMaterial>(R.id.switch_enabled)
+        val switchEnabled = view.findViewById<SwitchCompat>(R.id.switch_enabled)
         val textSourcePath = view.findViewById<TextView>(R.id.text_source_path)
         val textUploadPath = view.findViewById<TextView>(R.id.text_upload_path)
         val checkWifiOnly = view.findViewById<CheckBox>(R.id.check_wifi_only)

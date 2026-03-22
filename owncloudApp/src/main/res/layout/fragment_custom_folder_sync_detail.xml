@@ -11,7 +11,7 @@
         android:padding="16dp">
 
         <!-- Enabled -->
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_enabled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,16 +126,16 @@
             android:gravity="end"
             android:paddingTop="8dp">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/common_remove"
                 android:layout_marginEnd="8dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="?android:attr/borderlessButtonStyle"
                 android:textColor="@android:color/holo_red_dark" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

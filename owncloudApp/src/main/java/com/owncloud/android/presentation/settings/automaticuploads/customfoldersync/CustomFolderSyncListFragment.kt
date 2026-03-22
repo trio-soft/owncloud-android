@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.switchmaterial.SwitchMaterial
+import androidx.appcompat.widget.SwitchCompat
 import com.owncloud.android.R
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration
 import kotlinx.coroutines.flow.first
@@ -97,7 +97,7 @@ class CustomFolderAdapter(
         val name: TextView = view.findViewById(R.id.text_folder_name)
         val sourcePath: TextView = view.findViewById(R.id.text_source_path)
         val uploadPath: TextView = view.findViewById(R.id.text_upload_path)
-        val enabledSwitch: SwitchMaterial = view.findViewById(R.id.switch_enabled)
+        val enabledSwitch: SwitchCompat = view.findViewById(R.id.switch_enabled)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_source_path" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_enabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
