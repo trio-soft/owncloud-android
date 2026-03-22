@@ -99,12 +99,16 @@ class CustomFolderSyncViewModel(
             )
             // Ensure periodic worker is scheduled
             workManagerProvider.enqueueAutomaticUploadsWorker()
-            // Also trigger an immediate one-time run
+            // Trigger an immediate one-time run with unique work to avoid overlap
             val oneTimeRequest = androidx.work.OneTimeWorkRequestBuilder<com.owncloud.android.workers.AutomaticUploadsWorker>()
                 .addTag("custom_folder_sync_immediate")
                 .build()
             androidx.work.WorkManager.getInstance(workManagerProvider.context)
-                .enqueue(oneTimeRequest)
+                .enqueueUniqueWork(
+                    "custom_folder_sync_immediate",
+                    androidx.work.ExistingWorkPolicy.REPLACE,
+                    oneTimeRequest
+                )
         }
         // Reset upload existing flag after save
         _uploadExisting.value = false

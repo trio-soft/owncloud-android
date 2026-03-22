@@ -67,6 +67,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import com.owncloud.android.domain.files.usecases.GetFileByRemotePathUseCase
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -184,10 +185,22 @@ class UploadFileFromContentUriWorker(
         }
         cacheFile.createNewFile()
 
-        appContext.contentResolver.openInputStream(contentUri)?.use { inputStream ->
+        val inputStream = appContext.contentResolver.openInputStream(contentUri)
+        if (inputStream == null) {
+            Timber.e("Cannot open input stream for content URI: $contentUri")
+            throw IllegalStateException("Cannot read file from content URI: $contentUri")
+        }
+        inputStream.use { input ->
             FileOutputStream(cachePath).use { outputStream ->
-                inputStream.copyTo(outputStream)
+                input.copyTo(outputStream)
             }
+        }
+
+        // Verify the copied file is not empty
+        val copiedSize = cacheFile.length()
+        Timber.d("Copied file to cache: $cachePath, size: $copiedSize bytes")
+        if (copiedSize == 0L) {
+            Timber.w("Copied file is 0 bytes, content URI may not be accessible: $contentUri")
         }
 
         transferRepository.updateTransferSourcePath(uploadIdInStorageManager, contentUri.toString())
@@ -223,16 +236,29 @@ class UploadFileFromContentUriWorker(
     }
 
     private fun checkNameCollisionAndGetAnAvailableOneInCase(client: OwnCloudClient) {
-        Timber.d("Checking name collision in server")
-        val remotePath = getAvailableRemotePath(
-            ownCloudClient = client,
-            remotePath = uploadPath,
-            spaceWebDavUrl = spaceWebDavUrl,
-            isUserLogged = AccountUtils.getCurrentOwnCloudAccount(appContext) != null,
-        )
-        if (remotePath != uploadPath) {
-            uploadPath = remotePath
-            Timber.d("Name collision detected, let's rename it to %s", remotePath)
+        if (ocTransfer.forceOverwrite) {
+            // Overwrite mode: check if remote file exists and get its etag for conflict detection
+            val getFileByRemotePathUseCase: GetFileByRemotePathUseCase by inject()
+            val useCaseResult = getFileByRemotePathUseCase(
+                GetFileByRemotePathUseCase.Params(
+                    ocTransfer.accountName,
+                    ocTransfer.remotePath,
+                    ocTransfer.spaceId
+                )
+            )
+            Timber.d("Overwrite mode: remote file etag = ${useCaseResult.getDataOrNull()?.etagInConflict}")
+        } else {
+            Timber.d("Checking name collision in server")
+            val remotePath = getAvailableRemotePath(
+                ownCloudClient = client,
+                remotePath = uploadPath,
+                spaceWebDavUrl = spaceWebDavUrl,
+                isUserLogged = AccountUtils.getCurrentOwnCloudAccount(appContext) != null,
+            )
+            if (remotePath != uploadPath) {
+                uploadPath = remotePath
+                Timber.d("Name collision detected, let's rename it to %s", remotePath)
+            }
         }
     }
 
