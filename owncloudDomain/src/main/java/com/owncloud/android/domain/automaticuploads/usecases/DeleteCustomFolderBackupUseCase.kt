@@ -8,9 +8,9 @@ class DeleteCustomFolderBackupUseCase(
 ) : BaseUseCase<Unit, DeleteCustomFolderBackupUseCase.Params>() {
 
     override fun run(params: Params) =
-        folderBackupRepository.deleteFolderBackupConfigurationById(params.id)
+        folderBackupRepository.resetFolderBackupConfigurationByName(params.name)
 
     data class Params(
-        val id: Int
+        val name: String
     )
 }

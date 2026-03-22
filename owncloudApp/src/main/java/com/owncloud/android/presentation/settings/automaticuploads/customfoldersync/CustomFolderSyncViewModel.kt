@@ -112,16 +112,8 @@ class CustomFolderSyncViewModel(
     fun deleteConfig(config: FolderBackUpConfiguration) {
         viewModelScope.launch(coroutinesDispatcherProvider.io) {
             deleteCustomFolderBackupUseCase(
-                DeleteCustomFolderBackupUseCase.Params(id = config.hashCode()) // We'll use name-based deletion
+                DeleteCustomFolderBackupUseCase.Params(name = config.name)
             )
-        }
-    }
-
-    fun deleteConfigByName(name: String) {
-        viewModelScope.launch(coroutinesDispatcherProvider.io) {
-            // Use the existing resetFolderBackupConfigurationByName through the save use case
-            // Actually we need to go through repository directly - but for clean arch we delete by name
-            deleteCustomFolderBackupUseCase(DeleteCustomFolderBackupUseCase.Params(id = 0))
         }
     }
 
