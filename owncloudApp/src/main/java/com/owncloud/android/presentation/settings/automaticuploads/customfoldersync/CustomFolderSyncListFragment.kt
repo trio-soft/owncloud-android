@@ -29,11 +29,11 @@ import com.owncloud.android.R
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class CustomFolderSyncListFragment : Fragment() {
 
-    private val viewModel by viewModel<CustomFolderSyncViewModel>()
+    private val viewModel by activityViewModel<CustomFolderSyncViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_custom_folder_sync_list, container, false)

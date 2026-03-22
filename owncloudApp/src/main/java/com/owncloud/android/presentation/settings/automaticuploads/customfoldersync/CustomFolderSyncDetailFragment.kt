@@ -95,10 +95,16 @@ class CustomFolderSyncDetailFragment : Fragment() {
         }
 
         view.findViewById<View>(R.id.row_upload_path).setOnClickListener {
-            val config = viewModel.editingConfig.value ?: return@setOnClickListener
+            val config = viewModel.editingConfig.value
+            if (config == null || config.accountName.isBlank()) {
+                timber.log.Timber.w("Cannot open FolderPicker: config=$config accountName=${config?.accountName}")
+                return@setOnClickListener
+            }
             val intent = Intent(activity, FolderPickerActivity::class.java).apply {
                 putExtra(FolderPickerActivity.EXTRA_PICKER_MODE, FolderPickerActivity.PickerMode.CAMERA_FOLDER)
-                putExtra(FolderPickerActivity.KEY_SPACE_ID, config.spaceId)
+                if (config.spaceId != null) {
+                    putExtra(FolderPickerActivity.KEY_SPACE_ID, config.spaceId)
+                }
                 putExtra(FolderPickerActivity.KEY_ACCOUNT_NAME, config.accountName)
             }
             selectUploadPathLauncher.launch(intent)
@@ -130,15 +136,28 @@ class CustomFolderSyncDetailFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.editingConfig.collect { config ->
-                    config ?: return@collect
-                    switchEnabled.isChecked = config.enabled
-                    textSourcePath.text = config.sourcePath.ifEmpty { getString(R.string.custom_folder_sync_source_path) }
-                    textUploadPath.text = config.uploadPath
-                    checkWifiOnly.isChecked = config.wifiOnly
-                    checkChargingOnly.isChecked = config.chargingOnly
-                    checkUseSubfolders.isChecked = config.useSubfolders
-                    checkExcludeHidden.isChecked = config.excludeHidden
+                launch {
+                    viewModel.editingConfig.collect { config ->
+                        config ?: return@collect
+                        switchEnabled.isChecked = config.enabled
+                        // Show readable source path if available, else parse from URI, else placeholder
+                        val srcDisplay = viewModel.displaySourcePath.value
+                            ?: config.sourcePath.takeIf { it.isNotEmpty() }
+                            ?: getString(R.string.custom_folder_sync_source_path)
+                        textSourcePath.text = srcDisplay
+                        textUploadPath.text = config.uploadPath
+                        checkWifiOnly.isChecked = config.wifiOnly
+                        checkChargingOnly.isChecked = config.chargingOnly
+                        checkUseSubfolders.isChecked = config.useSubfolders
+                        checkExcludeHidden.isChecked = config.excludeHidden
+                    }
+                }
+                launch {
+                    viewModel.displaySourcePath.collect { path ->
+                        if (path != null) {
+                            textSourcePath.text = path
+                        }
+                    }
                 }
             }
         }

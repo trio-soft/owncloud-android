@@ -12,6 +12,7 @@ package com.owncloud.android.presentation.settings.automaticuploads.customfolder
 
 import android.content.Intent
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration
@@ -111,10 +112,17 @@ class CustomFolderSyncViewModel(
     }
 
     fun handleSelectSourcePath(contentUriForTree: Uri) {
+        // Store the content URI (needed for access), but also derive a readable path for display
+        val docId = try { DocumentsContract.getTreeDocumentId(contentUriForTree) } catch (_: Exception) { null }
+        val displayPath = docId?.replace("primary:", "/storage/emulated/0/")?.replace(":", "/") ?: contentUriForTree.toString()
         _editingConfig.value = _editingConfig.value?.copy(
             sourcePath = contentUriForTree.toString()
         )
+        _displaySourcePath.value = displayPath
     }
+
+    private val _displaySourcePath = MutableStateFlow<String?>(null)
+    val displaySourcePath: StateFlow<String?> = _displaySourcePath
 
     fun handleSelectUploadPath(data: Intent?) {
         val folderToUpload = data?.getParcelableExtra<OCFile>(FolderPickerActivity.EXTRA_FOLDER)
