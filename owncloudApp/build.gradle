@@ -96,6 +96,7 @@ android {
     compileSdkVersion sdkCompileVersion
 
     defaultConfig {
+        applicationId "com.triosoft.owncloud.android"
         minSdkVersion sdkMinVersion
         targetSdkVersion sdkTargetVersion
 
