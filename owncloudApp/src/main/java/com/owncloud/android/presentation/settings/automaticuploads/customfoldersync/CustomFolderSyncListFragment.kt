@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.owncloud.android.R
 import com.owncloud.android.domain.automaticuploads.model.FolderBackUpConfiguration
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -65,10 +66,14 @@ class CustomFolderSyncListFragment : Fragment() {
 
         fabAdd.setOnClickListener {
             viewModel.createNewConfig()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.settings_container, CustomFolderSyncDetailFragment())
-                .addToBackStack(null)
-                .commit()
+            // Navigate once the config is ready (async DB call)
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.editingConfig.first { it != null }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.settings_container, CustomFolderSyncDetailFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

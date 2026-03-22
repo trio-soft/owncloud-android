@@ -54,24 +54,26 @@ class CustomFolderSyncViewModel(
 
     fun createNewConfig() {
         val accountName = accountProvider.getCurrentOwnCloudAccount()?.name ?: return
-        val spaceId = getPersonalSpaceForAccountUseCase(
-            GetPersonalSpaceForAccountUseCase.Params(accountName = accountName)
-        )?.id
+        viewModelScope.launch(coroutinesDispatcherProvider.io) {
+            val spaceId = getPersonalSpaceForAccountUseCase(
+                GetPersonalSpaceForAccountUseCase.Params(accountName = accountName)
+            )?.id
 
-        _editingConfig.value = FolderBackUpConfiguration(
-            accountName = accountName,
-            behavior = UploadBehavior.COPY,
-            sourcePath = "",
-            uploadPath = "/CustomSync",
-            wifiOnly = true,
-            chargingOnly = false,
-            lastSyncTimestamp = System.currentTimeMillis(),
-            name = "Custom-${UUID.randomUUID().toString().take(8)}",
-            spaceId = spaceId,
-            enabled = true,
-            useSubfolders = false,
-            excludeHidden = true,
-        )
+            _editingConfig.value = FolderBackUpConfiguration(
+                accountName = accountName,
+                behavior = UploadBehavior.COPY,
+                sourcePath = "",
+                uploadPath = "/CustomSync",
+                wifiOnly = true,
+                chargingOnly = false,
+                lastSyncTimestamp = System.currentTimeMillis(),
+                name = "Custom-${UUID.randomUUID().toString().take(8)}",
+                spaceId = spaceId,
+                enabled = true,
+                useSubfolders = false,
+                excludeHidden = true,
+            )
+        }
     }
 
     fun editConfig(config: FolderBackUpConfiguration) {
