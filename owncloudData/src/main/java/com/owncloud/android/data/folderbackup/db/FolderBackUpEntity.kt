@@ -33,6 +33,10 @@ data class FolderBackUpEntity(
     val name: String,
     val lastSyncTimestamp: Long,
     val spaceId: String?,
+    val enabled: Boolean = true,
+    val useSubfolders: Boolean = false,
+    val excludeHidden: Boolean = true,
+    val fileExistsPolicy: String = "SKIP",
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

@@ -933,4 +933,33 @@
     <string name="text_preview_label">Text preview</string>
     <string name="space_members_label">Space members</string>
 
+    <!-- Custom folder sync -->
+    <string name="custom_folder_sync_notification_title">Custom folder sync</string>
+    <string name="custom_folder_sync_notification_text">Uploading %1$d files from %2$s</string>
+    <string name="custom_folder_sync_error_title">Custom folder sync error</string>
+    <string name="custom_folder_sync_error_text">Source path for \'%1$s\' is not accessible. Please update it in settings.</string>
+    <string name="prefs_subsection_custom_folder_sync">Custom Folder Sync</string>
+    <string name="prefs_subsection_custom_folder_sync_summary">Sync custom folders to server</string>
+    <string name="custom_folder_sync_add">Add folder</string>
+    <string name="custom_folder_sync_empty">No custom folders configured. Tap \"+\" to add one.</string>
+    <string name="custom_folder_sync_source_path">Local folder</string>
+    <string name="custom_folder_sync_upload_path">Remote folder</string>
+    <string name="custom_folder_sync_wifi_only">Only upload on unmetered Wi-Fi</string>
+    <string name="custom_folder_sync_charging_only">Only upload when charging</string>
+    <string name="custom_folder_sync_use_subfolders">Use subfolders</string>
+    <string name="custom_folder_sync_use_subfolders_summary">Store in subfolders based on date</string>
+    <string name="custom_folder_sync_exclude_hidden">Exclude hidden files</string>
+    <string name="custom_folder_sync_exclude_hidden_summary">Exclude hidden files and folders</string>
+    <string name="custom_folder_sync_delete_confirm_title">Delete folder sync</string>
+    <string name="custom_folder_sync_delete_confirm_message">Are you sure you want to remove this folder sync configuration?</string>
+    <string name="custom_folder_sync_name">Name</string>
+    <string name="custom_folder_sync_name_hint">e.g. Camera Photos</string>
+    <string name="custom_folder_sync_upload_existing">Also upload existing files</string>
+    <string name="custom_folder_sync_file_exists_policy">If file already exists on server</string>
+    <string-array name="custom_folder_sync_file_exists_options">
+        <item>Skip uploading</item>
+        <item>Overwrite remote version</item>
+        <item>Rename new version</item>
+    </string-array>
+    <string name="custom_folder_sync_enabled">Enabled</string>
 </resources>

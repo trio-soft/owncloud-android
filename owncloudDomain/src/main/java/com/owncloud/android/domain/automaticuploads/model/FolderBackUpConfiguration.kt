@@ -29,14 +29,36 @@ data class FolderBackUpConfiguration(
     val lastSyncTimestamp: Long,
     val name: String,
     val spaceId: String?,
+    val enabled: Boolean = true,
+    val useSubfolders: Boolean = false,
+    val excludeHidden: Boolean = true,
+    val fileExistsPolicy: FileExistsPolicy = FileExistsPolicy.SKIP,
 ) {
 
     val isPictureUploads get() = name == pictureUploadsName
     val isVideoUploads get() = name == videoUploadsName
+    val isCustomFolderSync get() = !isPictureUploads && !isVideoUploads
 
     companion object {
         const val pictureUploadsName = "Picture uploads"
         const val videoUploadsName = "Video uploads"
+    }
+}
+
+/**
+ * Policy for handling files that already exist on the remote server.
+ */
+enum class FileExistsPolicy {
+    /** Skip uploading if a file with the same name exists remotely */
+    SKIP,
+    /** Overwrite the remote file (local always wins) */
+    OVERWRITE,
+    /** Rename the new upload (append counter) */
+    RENAME;
+
+    companion object {
+        fun fromString(string: String): FileExistsPolicy =
+            try { valueOf(string.uppercase()) } catch (_: Exception) { SKIP }
     }
 }
 

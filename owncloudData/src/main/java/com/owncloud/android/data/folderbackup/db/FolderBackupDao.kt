@@ -29,21 +29,30 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FolderBackupDao {
-    @Query(SELECT)
+    @Query(SELECT_BY_NAME)
     fun getFolderBackUpConfigurationByName(
         name: String
     ): FolderBackUpEntity?
 
-    @Query(SELECT)
+    @Query(SELECT_BY_NAME)
     fun getFolderBackUpConfigurationByNameAsFlow(
         name: String
     ): Flow<FolderBackUpEntity?>
 
+    @Query("SELECT * FROM ${ProviderMeta.ProviderTableMeta.FOLDER_BACKUP_TABLE_NAME}")
+    fun getAllFolderBackupConfigurations(): List<FolderBackUpEntity>
+
+    @Query("SELECT * FROM ${ProviderMeta.ProviderTableMeta.FOLDER_BACKUP_TABLE_NAME}")
+    fun getAllFolderBackupConfigurationsAsFlow(): Flow<List<FolderBackUpEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrReplace(folderBackUpEntity: FolderBackUpEntity): Long
 
-    @Query(DELETE)
+    @Query(DELETE_BY_NAME)
     fun delete(name: String): Int
+
+    @Query("DELETE FROM ${ProviderMeta.ProviderTableMeta.FOLDER_BACKUP_TABLE_NAME} WHERE id = :id")
+    fun deleteById(id: Int): Int
 
     @Transaction
     fun update(folderBackUpEntity: FolderBackUpEntity): Long {
@@ -52,13 +61,13 @@ interface FolderBackupDao {
     }
 
     companion object {
-        private const val SELECT = """
+        private const val SELECT_BY_NAME = """
             SELECT *
             FROM ${ProviderMeta.ProviderTableMeta.FOLDER_BACKUP_TABLE_NAME}
             WHERE name = :name
         """
 
-        private const val DELETE = """
+        private const val DELETE_BY_NAME = """
             DELETE
             FROM ${ProviderMeta.ProviderTableMeta.FOLDER_BACKUP_TABLE_NAME}
             WHERE name = :name

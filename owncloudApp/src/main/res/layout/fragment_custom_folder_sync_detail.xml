@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_folder_sync_name"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/custom_folder_sync_name_hint"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- Enabled -->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_enabled"
+            android:paddingVertical="12dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- Source Path -->
+        <LinearLayout
+            android:id="@+id/row_source_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_folder_sync_source_path"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_source_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- Upload Path -->
+        <LinearLayout
+            android:id="@+id/row_upload_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_folder_sync_upload_path"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_upload_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- Options -->
+        <CheckBox
+            android:id="@+id/check_wifi_only"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_wifi_only"
+            android:paddingVertical="8dp" />
+
+        <CheckBox
+            android:id="@+id/check_charging_only"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_charging_only"
+            android:paddingVertical="8dp" />
+
+        <CheckBox
+            android:id="@+id/check_use_subfolders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_use_subfolders"
+            android:paddingVertical="8dp" />
+
+        <CheckBox
+            android:id="@+id/check_exclude_hidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_exclude_hidden"
+            android:paddingVertical="8dp" />
+
+        <CheckBox
+            android:id="@+id/check_upload_existing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_upload_existing"
+            android:paddingVertical="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- File Exists Policy -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_folder_sync_file_exists_policy"
+            android:textSize="16sp"
+            android:paddingTop="12dp" />
+
+        <Spinner
+            android:id="@+id/spinner_file_exists_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="?android:dividerHorizontal" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:paddingTop="8dp">
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_remove"
+                android:layout_marginEnd="8dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_save_exit" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

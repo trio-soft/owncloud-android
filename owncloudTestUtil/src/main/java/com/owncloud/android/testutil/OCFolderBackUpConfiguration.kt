@@ -53,3 +53,33 @@ val OC_AUTOMATIC_UPLOADS_CONFIGURATION = AutomaticUploadsConfiguration(
     pictureUploadsConfiguration = OC_BACKUP,
     videoUploadsConfiguration = OC_BACKUP
 )
+
+val OC_CUSTOM_FOLDER_BACKUP = FolderBackUpConfiguration(
+    accountName = "test@owncloud.test",
+    behavior = UploadBehavior.COPY,
+    sourcePath = "/storage/emulated/0/Documents",
+    uploadPath = "/Documents",
+    wifiOnly = true,
+    chargingOnly = false,
+    lastSyncTimestamp = 1542628397,
+    name = "Custom-doc-folder",
+    spaceId = null,
+    enabled = true,
+    useSubfolders = true,
+    excludeHidden = true,
+)
+
+val OC_CUSTOM_FOLDER_BACKUP_ENTITY = FolderBackUpEntity(
+    accountName = "test@owncloud.test",
+    behavior = UploadBehavior.COPY.name,
+    sourcePath = "/storage/emulated/0/Documents",
+    uploadPath = "/Documents",
+    wifiOnly = true,
+    chargingOnly = false,
+    lastSyncTimestamp = 1542628397,
+    name = "Custom-doc-folder",
+    spaceId = null,
+    enabled = true,
+    useSubfolders = true,
+    excludeHidden = true,
+)

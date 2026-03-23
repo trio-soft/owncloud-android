@@ -34,6 +34,7 @@ import com.owncloud.android.BuildConfig
 import com.owncloud.android.R
 import com.owncloud.android.extensions.openPrivacyPolicy
 import com.owncloud.android.extensions.showMessageInSnackbar
+import com.owncloud.android.presentation.settings.automaticuploads.customfoldersync.CustomFolderSyncListFragment
 import com.owncloud.android.presentation.releasenotes.ReleaseNotesActivity
 import com.owncloud.android.presentation.releasenotes.ReleaseNotesViewModel
 import com.owncloud.android.presentation.settings.more.SettingsMoreViewModel
@@ -49,6 +50,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var settingsScreen: PreferenceScreen? = null
     private var subsectionPictureUploads: Preference? = null
     private var subsectionVideoUploads: Preference? = null
+    private var subsectionCustomFolderSync: Preference? = null
     private var subsectionMore: Preference? = null
     private var prefPrivacyPolicy: Preference? = null
     private var subsectionWhatsNew: Preference? = null
@@ -61,6 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         settingsScreen = findPreference(SCREEN_SETTINGS)
         subsectionPictureUploads = findPreference(SUBSECTION_PICTURE_UPLOADS)
         subsectionVideoUploads = findPreference(SUBSECTION_VIDEO_UPLOADS)
+        subsectionCustomFolderSync = findPreference(SUBSECTION_CUSTOM_FOLDER_SYNC)
         subsectionMore = findPreference(SUBSECTION_MORE)
         prefPrivacyPolicy = findPreference(PREFERENCE_PRIVACY_POLICY)
         subsectionWhatsNew = findPreference(SUBSECTION_WHATSNEW)
@@ -69,6 +72,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         subsectionPictureUploads?.isVisible = settingsViewModel.isThereAttachedAccount()
         subsectionVideoUploads?.isVisible = settingsViewModel.isThereAttachedAccount()
+        subsectionCustomFolderSync?.isVisible = settingsViewModel.isThereAttachedAccount()
+        subsectionCustomFolderSync?.setOnPreferenceClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.settings_container, CustomFolderSyncListFragment())
+                .addToBackStack(null)
+                .commit()
+            true
+        }
         subsectionMore?.isVisible = moreViewModel.shouldMoreSectionBeVisible()
         subsectionWhatsNew?.isVisible = releaseNotesViewModel.shouldWhatsNewSectionBeVisible()
 
@@ -129,6 +140,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_ABOUT_APP = "about_app"
         private const val SUBSECTION_PICTURE_UPLOADS = "picture_uploads_subsection"
         private const val SUBSECTION_VIDEO_UPLOADS = "video_uploads_subsection"
+        private const val SUBSECTION_CUSTOM_FOLDER_SYNC = "custom_folder_sync_subsection"
         private const val SUBSECTION_MORE = "more_subsection"
         private const val SUBSECTION_NOTIFICATIONS = "notifications_subsection"
         private const val SUBSECTION_WHATSNEW = "whatsNew"

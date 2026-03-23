@@ -33,6 +33,8 @@ import com.owncloud.android.R
 import com.owncloud.android.presentation.settings.advanced.SettingsAdvancedFragment
 import com.owncloud.android.presentation.settings.automaticuploads.SettingsPictureUploadsFragment
 import com.owncloud.android.presentation.settings.automaticuploads.SettingsVideoUploadsFragment
+import com.owncloud.android.presentation.settings.automaticuploads.customfoldersync.CustomFolderSyncListFragment
+import com.owncloud.android.presentation.settings.automaticuploads.customfoldersync.CustomFolderSyncDetailFragment
 import com.owncloud.android.presentation.settings.logging.SettingsLogsFragment
 import com.owncloud.android.presentation.settings.more.SettingsMoreFragment
 import com.owncloud.android.presentation.settings.security.SettingsSecurityFragment
@@ -67,6 +69,8 @@ class SettingsActivity : AppCompatActivity() {
             is SettingsLogsFragment -> R.string.prefs_subsection_logging
             is SettingsPictureUploadsFragment -> R.string.prefs_subsection_picture_uploads
             is SettingsVideoUploadsFragment -> R.string.prefs_subsection_video_uploads
+            is CustomFolderSyncListFragment -> R.string.prefs_subsection_custom_folder_sync
+            is CustomFolderSyncDetailFragment -> R.string.prefs_subsection_custom_folder_sync
             is SettingsAdvancedFragment -> R.string.prefs_subsection_advanced
             is SettingsMoreFragment -> R.string.prefs_subsection_more
             else -> R.string.actionbar_settings

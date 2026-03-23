@@ -47,6 +47,9 @@ import com.owncloud.android.domain.automaticuploads.usecases.ResetPictureUploads
 import com.owncloud.android.domain.automaticuploads.usecases.ResetVideoUploadsUseCase
 import com.owncloud.android.domain.automaticuploads.usecases.SavePictureUploadsConfigurationUseCase
 import com.owncloud.android.domain.automaticuploads.usecases.SaveVideoUploadsConfigurationUseCase
+import com.owncloud.android.domain.automaticuploads.usecases.GetAllFolderBackupConfigurationsStreamUseCase
+import com.owncloud.android.domain.automaticuploads.usecases.SaveCustomFolderBackupConfigurationUseCase
+import com.owncloud.android.domain.automaticuploads.usecases.DeleteCustomFolderBackupUseCase
 import com.owncloud.android.domain.capabilities.usecases.GetCapabilitiesAsLiveDataUseCase
 import com.owncloud.android.domain.capabilities.usecases.GetStoredCapabilitiesUseCase
 import com.owncloud.android.domain.capabilities.usecases.RefreshCapabilitiesFromServerAsyncUseCase
@@ -304,6 +307,9 @@ val useCaseModule = module {
     factoryOf(::ResetVideoUploadsUseCase)
     factoryOf(::SavePictureUploadsConfigurationUseCase)
     factoryOf(::SaveVideoUploadsConfigurationUseCase)
+    factoryOf(::GetAllFolderBackupConfigurationsStreamUseCase)
+    factoryOf(::SaveCustomFolderBackupConfigurationUseCase)
+    factoryOf(::DeleteCustomFolderBackupUseCase)
 
     // Accounts
     factoryOf(::RemoveAccountUseCase)

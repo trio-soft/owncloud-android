@@ -23,6 +23,7 @@ package com.owncloud.android.data.folderbackup.repository
 import com.owncloud.android.data.folderbackup.datasources.LocalFolderBackupDataSource
 import com.owncloud.android.testutil.OC_AUTOMATIC_UPLOADS_CONFIGURATION
 import com.owncloud.android.testutil.OC_BACKUP
+import com.owncloud.android.testutil.OC_CUSTOM_FOLDER_BACKUP
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -110,6 +111,52 @@ class OCFolderBackupRepositoryTest {
         verify(exactly = 1) {
             localFolderBackupDataSource.resetFolderBackupConfigurationByName(OC_BACKUP.name)
         }
+    }
+
+    @Test
+    fun `getAllFolderBackupConfigurations returns all configurations`() {
+        val configs = listOf(OC_BACKUP, OC_CUSTOM_FOLDER_BACKUP)
+        every {
+            localFolderBackupDataSource.getAllFolderBackupConfigurations()
+        } returns configs
+
+        val result = ocFolderBackupRepository.getAllFolderBackupConfigurations()
+        assertEquals(configs, result)
+
+        verify(exactly = 1) {
+            localFolderBackupDataSource.getAllFolderBackupConfigurations()
+        }
+    }
+
+    @Test
+    fun `getAllFolderBackupConfigurationsAsFlow returns a Flow with all configurations`() = runTest {
+        val configs = listOf(OC_BACKUP, OC_CUSTOM_FOLDER_BACKUP)
+        every {
+            localFolderBackupDataSource.getAllFolderBackupConfigurationsAsFlow()
+        } returns flowOf(configs)
+
+        val result = ocFolderBackupRepository.getAllFolderBackupConfigurationsAsFlow().first()
+        assertEquals(configs, result)
+
+        verify(exactly = 1) {
+            localFolderBackupDataSource.getAllFolderBackupConfigurationsAsFlow()
+        }
+    }
+
+    @Test
+    fun `deleteFolderBackupConfigurationById deletes correctly`() {
+        ocFolderBackupRepository.deleteFolderBackupConfigurationById(42)
+
+        verify(exactly = 1) {
+            localFolderBackupDataSource.deleteFolderBackupConfigurationById(42)
+        }
+    }
+
+    @Test
+    fun `custom folder configuration has isCustomFolderSync true`() {
+        assert(OC_CUSTOM_FOLDER_BACKUP.isCustomFolderSync)
+        assert(!OC_CUSTOM_FOLDER_BACKUP.isPictureUploads)
+        assert(!OC_CUSTOM_FOLDER_BACKUP.isVideoUploads)
     }
 
 }

@@ -50,6 +50,7 @@ import com.owncloud.android.presentation.settings.SettingsViewModel
 import com.owncloud.android.presentation.settings.advanced.SettingsAdvancedViewModel
 import com.owncloud.android.presentation.settings.automaticuploads.SettingsPictureUploadsViewModel
 import com.owncloud.android.presentation.settings.automaticuploads.SettingsVideoUploadsViewModel
+import com.owncloud.android.presentation.settings.automaticuploads.customfoldersync.CustomFolderSyncViewModel
 import com.owncloud.android.presentation.settings.logging.SettingsLogsViewModel
 import com.owncloud.android.presentation.settings.more.SettingsMoreViewModel
 import com.owncloud.android.presentation.settings.security.SettingsSecurityViewModel
@@ -84,6 +85,7 @@ val viewModelModule = module {
     viewModelOf(::SettingsPictureUploadsViewModel)
     viewModelOf(::SettingsSecurityViewModel)
     viewModelOf(::SettingsVideoUploadsViewModel)
+    viewModelOf(::CustomFolderSyncViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::SpaceMembersViewModel)
     viewModelOf(::FileOperationsViewModel)
